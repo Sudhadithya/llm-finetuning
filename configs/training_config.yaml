@@ -1,0 +1,63 @@
+# Training Configuration for Phi-2 LoRA Fine-Tuning
+# Optimized for RTX 4060 (8GB VRAM)
+
+model:
+  name: "microsoft/phi-2"
+  type: "causal_lm"
+  device_map: "auto"
+  torch_dtype: "float16"
+
+training:
+  batch_size: 2
+  gradient_accumulation_steps: 2  # Effective batch size = 4
+  num_epochs: 2
+  learning_rate: 2.0e-4
+  warmup_steps: 10
+  weight_decay: 0.01
+  max_grad_norm: 0.3
+  
+data:
+  dataset_path: "data/processed/train.json"
+  max_seq_length: 512
+  train_val_split: 0.9
+  
+lora:
+  r: 8                    # LoRA rank (reduced for memory)
+  lora_alpha: 16          # LoRA scaling
+  lora_dropout: 0.05
+  target_modules:
+    - "q_proj"
+    - "v_proj"
+    - "k_proj"
+    - "out_proj"
+  bias: "none"
+  task_type: "CAUSAL_LM"
+
+quantization:
+  load_in_8bit: true
+  bnb_8bit_use_double_quant: true
+  bnb_8bit_quant_type: "nf8"
+  bnb_8bit_compute_dtype: "bfloat16"
+
+optimizer:
+  type: "paged_adamw_8bit"
+  lr_scheduler: "linear"
+
+evaluation:
+  eval_steps: 50
+  eval_strategy: "steps"
+  metric_for_best_model: "eval_loss"
+  
+output:
+  output_dir: "outputs"
+  checkpoint_dir: "outputs/checkpoints"
+  model_save_dir: "models/phi2-lora"
+  
+tracking:
+  use_wandb: true
+  project_name: "llm-finetuning-platform"
+  
+logging:
+  logging_steps: 5
+  log_level: "info"
+  save_total_limit: 3
