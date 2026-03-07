@@ -65,6 +65,7 @@ print("\n[2/6] Loading Tokenizer...")
 model_name = "microsoft/phi-2"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 tokenizer.pad_token = tokenizer.eos_token
+config = AutoConfig.from_pretrained(model_name)
 config.pad_token_id = tokenizer.pad_token_id
 
 # Tokenization function
