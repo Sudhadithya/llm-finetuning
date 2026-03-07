@@ -98,6 +98,7 @@ model = AutoModelForCausalLM.from_pretrained(
     quantization_config=bnb_config,
     device_map="auto"
 )
+model.config.pad_token_id = tokenizer.pad_token_id
 
 # Prepare for LoRA
 model = prepare_model_for_kbit_training(model)
