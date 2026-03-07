@@ -65,6 +65,7 @@ print("\n[2/6] Loading Tokenizer...")
 model_name = "microsoft/phi-2"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 tokenizer.pad_token = tokenizer.eos_token
+config.pad_token_id = tokenizer.pad_token_id
 
 # Tokenization function
 def tokenize(example):
@@ -90,11 +91,12 @@ bnb_config = BitsAndBytesConfig(
     load_in_8bit=True,
     bnb_8bit_use_double_quant=True,
     bnb_8bit_quant_type="nf8",
-    bnb_8bit_compute_dtype=torch.bfloat16
+    bnb_8bit_compute_dtype=torch.float16
 )
 
 model = AutoModelForCausalLM.from_pretrained(
     model_name,
+    config=config,
     quantization_config=bnb_config,
     device_map="auto"
 )
