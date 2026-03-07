@@ -10,7 +10,8 @@ from transformers import (
     TrainingArguments,
     Trainer,
     DataCollatorForLanguageModeling,
-    BitsAndBytesConfig
+    BitsAndBytesConfig,
+    AutoConfig
 )
 
 from peft import LoraConfig, get_peft_model, TaskType, prepare_model_for_kbit_training
