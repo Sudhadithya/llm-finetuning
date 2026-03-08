@@ -70,6 +70,14 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 tokenizer.pad_token = tokenizer.eos_token
 
+from transformers import AutoConfig
+
+config = AutoConfig.from_pretrained(model_name)
+
+# Fix missing pad token
+config.pad_token_id = tokenizer.eos_token_id
+
+
 # -----------------------------
 # Tokenization
 # -----------------------------
@@ -102,6 +110,7 @@ bnb_config = BitsAndBytesConfig(
 
 model = AutoModelForCausalLM.from_pretrained(
     model_name,
+    config=config,
     quantization_config=bnb_config,
     device_map="auto"
 )
