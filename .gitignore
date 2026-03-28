@@ -1,0 +1,24 @@
+# Environment
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Experiments & Results
+experiments/logs/*
+!experiments/logs/.gitkeep
+experiments/results/*
+!experiments/results/.gitkeep
+
+# IDEs
+.idea/
+.vscode/
+
+# Ignore cached models
+models/
+.cache/
+
+# Mac
+.DS_Store

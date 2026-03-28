@@ -1,0 +1,20 @@
+experiment_name: "exp_002"
+model: "microsoft/phi-2"
+dataset_version: "customer_support_v1"
+dataset_path: "datasets/customer_support"
+training:
+  epochs: 3
+  batch_size: 4
+  learning_rate: 3.0e-04
+  max_length: 512
+lora:
+  applied: true
+  r: 8
+  alpha: 16
+  dropout: 0.05
+evaluation:
+  metrics:
+  - bleu
+  - rouge
+  - bertscore
+  generate_samples: true

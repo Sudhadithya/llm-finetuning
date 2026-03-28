@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  llm-api:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    image: llm-finetuning-api:latest
+    container_name: llm_inference_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../experiments/results:/app/experiments/results
+    environment:
+      - MODEL_DEPLOYED=True
+      - CUDA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
